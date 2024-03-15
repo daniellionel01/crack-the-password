@@ -24,17 +24,23 @@ pub fn bts(b: Bool) -> String {
 
 pub fn validate_pin(pin: Pin) -> Bool {
   let #(n1, n2, n3) = pin
-
+  // [6][8][2] one number is correct and well placed
   let r1 = n1 == 6 || n2 == 8 || n3 == 2
+
+  // [6][1][4] one number is correct but wrongly placed
   let r2 =
     { n2 == 6 || n3 == 6 } || { n1 == 1 || n3 == 1 } || { n1 == 4 || n2 == 4 }
 
+  // [2][0][6] two numbers are correct, but wrongly placed
   let r3_1 = n2 == 2 || n3 == 2
   let r3_2 = n1 == 0 || n3 == 0
   let r3_3 = n1 == 6 || n2 == 6
   let r3 = { bool.to_int(r3_1) + bool.to_int(r3_2) + bool.to_int(r3_3) } == 2
 
+  // [7][3][8] nothing is correct
   let r4 = n1 != 7 && n2 != 3 && n3 != 8
+
+  // [7][8][0] one number is correct, but wrongly place
   let r5 =
     { n2 == 7 || n3 == 7 } || { n1 == 8 || n3 == 8 } || { n1 == 0 || n2 == 0 }
 
