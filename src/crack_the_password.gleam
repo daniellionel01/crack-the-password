@@ -24,6 +24,7 @@ pub fn bts(b: Bool) -> String {
 
 pub fn validate_pin(pin: Pin) -> Bool {
   let #(n1, n2, n3) = pin
+
   // [6][8][2] one number is correct and well placed
   let r1 = n1 == 6 || n2 == 8 || n3 == 2
 
