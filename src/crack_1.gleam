@@ -40,11 +40,16 @@ pub fn validate_pin(pin: Pin) -> Bool {
   let #(n1, n2, n3) = pin
 
   // [6][8][2] one number is correct and well placed
-  let r1 = n1 == 6 || n2 == 8 || n3 == 2
+  let r1 = lib.sum_bools([n1 == 6, n2 == 8, n3 == 2]) == 1
 
   // [6][1][4] one number is correct but wrongly placed
   let r2 =
-    { n2 == 6 || n3 == 6 } || { n1 == 1 || n3 == 1 } || { n1 == 4 || n2 == 4 }
+    lib.sum_bools([
+      list.contains([1, 4], n1),
+      list.contains([6, 4], n2),
+      list.contains([6, 1], n3),
+    ])
+    == 1
 
   // [2][0][6] two numbers are correct, but wrongly placed
   let r3_1 = n2 == 2 || n3 == 2
@@ -57,7 +62,12 @@ pub fn validate_pin(pin: Pin) -> Bool {
 
   // [7][8][0] one number is correct, but wrongly place
   let r5 =
-    { n2 == 7 || n3 == 7 } || { n1 == 8 || n3 == 8 } || { n1 == 0 || n2 == 0 }
+    lib.sum_bools([
+      list.contains([8, 0], n1),
+      list.contains([7, 0], n2),
+      list.contains([7, 8], n3),
+    ])
+    == 1
 
   r1 && r2 && r3 && r4 && r5
 }
