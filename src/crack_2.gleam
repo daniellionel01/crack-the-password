@@ -1,7 +1,7 @@
-import gleam/io
 import gleam/int
 import gleam/string
 import gleam/list
+import gleam/bool
 import gleam/set
 import lib
 import gleam/option.{type Option, None, Some}
@@ -70,7 +70,11 @@ pub fn validate_pin(pin: Pin) -> Bool {
   let r3 = lib.sum_bools([n1 == 5, n2 == 2, n3 == 0, n4 == 1]) == 1
 
   // [6][5][0][7] nothing is correct
-  let r4 = n1 != 6 || n2 != 5 || n3 != 0 || n4 != 7
+  let r4 =
+    [6, 5, 0, 7]
+    |> list.map(fn(i) { list.contains([n1, n2, n3, n4], i) })
+    |> list.contains(True)
+    |> bool.negate()
 
   // [8][5][2][4] two numbers are correct but wrong placed
   let r5_1 = list.contains([5, 2, 4], n1)
