@@ -2,7 +2,6 @@ import gleam/int
 import gleam/string
 import gleam/list
 import gleam/bool
-import gleam/set
 import lib
 import gleam/option.{type Option, None, Some}
 
@@ -39,35 +38,32 @@ pub fn pin_to_string(pin: Pin) -> String {
   <> "]"
 }
 
-fn ensure_unique(lst: List(a)) {
-  let length = list.length(lst)
-  let unique =
-    lst
-    |> set.from_list
-    |> set.to_list
-    |> list.length
-  length == unique
-}
-
 pub fn validate_pin(pin: Pin) -> Bool {
   let #(n1, n2, n3, n4) = pin
+  let lst = [n1, n2, n3, n4]
 
   // [9][2][8][5] one number is correct but wrong placed
   let r1_1 = list.contains([2, 8, 5], n1)
   let r1_2 = list.contains([9, 8, 5], n2)
   let r1_3 = list.contains([9, 2, 5], n3)
   let r1_4 = list.contains([9, 2, 8], n4)
-  let r1 = lib.sum_bools([r1_1, r1_2, r1_3, r1_4]) == 1
+  let r1 =
+    lib.sum_bools([r1_1, r1_2, r1_3, r1_4]) == 1
+    && lib.ensure_n(lst, [9, 2, 8, 5], 1)
 
   // [1][9][3][7] two numbers are correct but wrong placed
   let r2_1 = list.contains([9, 3, 7], n1)
   let r2_2 = list.contains([1, 3, 7], n2)
   let r2_3 = list.contains([1, 9, 7], n3)
   let r2_4 = list.contains([1, 9, 3], n4)
-  let r2 = lib.sum_bools([r2_1, r2_2, r2_3, r2_4]) == 2
+  let r2 =
+    lib.sum_bools([r2_1, r2_2, r2_3, r2_4]) == 2
+    && lib.ensure_n(lst, [1, 9, 3, 7], 2)
 
   // [5][2][0][1] one number is right and well placed
-  let r3 = lib.sum_bools([n1 == 5, n2 == 2, n3 == 0, n4 == 1]) == 1
+  let r3 =
+    lib.sum_bools([n1 == 5, n2 == 2, n3 == 0, n4 == 1]) == 1
+    && lib.ensure_n(lst, [5, 2, 0, 1], 1)
 
   // [6][5][0][7] nothing is correct
   let r4 =
@@ -81,9 +77,11 @@ pub fn validate_pin(pin: Pin) -> Bool {
   let r5_2 = list.contains([8, 2, 4], n2)
   let r5_3 = list.contains([8, 5, 4], n3)
   let r5_4 = list.contains([8, 5, 2], n4)
-  let r5 = lib.sum_bools([r5_1, r5_2, r5_3, r5_4]) == 2
+  let r5 =
+    lib.sum_bools([r5_1, r5_2, r5_3, r5_4]) == 2
+    && lib.ensure_n(lst, [8, 5, 2, 4], 2)
 
-  r1 && r2 && r3 && r4 && r5 && ensure_unique([n1, n2, n3, n4])
+  r1 && r2 && r3 && r4 && r5 && lib.ensure_unique([n1, n2, n3, n4])
 }
 
 pub fn next_pin(pin: Pin) -> Option(Pin) {

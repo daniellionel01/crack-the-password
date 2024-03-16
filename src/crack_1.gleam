@@ -38,9 +38,12 @@ pub fn pin_to_string(pin: Pin) -> String {
 
 pub fn validate_pin(pin: Pin) -> Bool {
   let #(n1, n2, n3) = pin
+  let lst = [n1, n2, n3]
 
   // [6][8][2] one number is correct and well placed
-  let r1 = lib.sum_bools([n1 == 6, n2 == 8, n3 == 2]) == 1
+  let r1 =
+    lib.sum_bools([n1 == 6, n2 == 8, n3 == 2]) == 1
+    && lib.ensure_n(lst, [6, 8, 2], 1)
 
   // [6][1][4] one number is correct but wrongly placed
   let r2 =
@@ -50,12 +53,14 @@ pub fn validate_pin(pin: Pin) -> Bool {
       list.contains([6, 1], n3),
     ])
     == 1
+    && lib.ensure_n(lst, [6, 1, 4], 1)
 
   // [2][0][6] two numbers are correct, but wrongly placed
   let r3_1 = n2 == 2 || n3 == 2
   let r3_2 = n1 == 0 || n3 == 0
   let r3_3 = n1 == 6 || n2 == 6
-  let r3 = lib.sum_bools([r3_1, r3_2, r3_3]) == 2
+  let r3 =
+    lib.sum_bools([r3_1, r3_2, r3_3]) == 2 && lib.ensure_n(lst, [2, 0, 6], 2)
 
   // [7][3][8] nothing is correct
   let r4 =
@@ -72,6 +77,7 @@ pub fn validate_pin(pin: Pin) -> Bool {
       list.contains([7, 8], n3),
     ])
     == 1
+    && lib.ensure_n(lst, [7, 8, 0], 1)
 
   r1 && r2 && r3 && r4 && r5
 }
