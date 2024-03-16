@@ -30,8 +30,6 @@ Here are the rules written down:
 - [6][5][0][7] nothing is correct
 - [8][5][2][4] two numbers are correct but wrong placed
 
-(3841)
-
 ## Development
 
 ```sh
