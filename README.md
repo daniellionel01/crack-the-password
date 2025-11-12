@@ -2,10 +2,6 @@
 
 Solving password puzzles that Twitter keeps showing me in my feed.
 
-## TODO
-
-- [ ] find useful abstractions that both implementations share
-
 ## Crack 1
 
 => https://twitter.com/klip_ent/status/1768378677983875500
