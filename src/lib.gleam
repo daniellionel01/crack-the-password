@@ -1,7 +1,6 @@
 import gleam/int
-import gleam/set
-import gleam/bool
 import gleam/list
+import gleam/set
 
 pub fn str_to_int(v: String) -> Int {
   let assert Ok(result) = int.base_parse(v, 10)
@@ -10,7 +9,12 @@ pub fn str_to_int(v: String) -> Int {
 
 pub fn sum_bools(bools: List(Bool)) -> Int {
   bools
-  |> list.map(bool.to_int)
+  |> list.map(fn(b) {
+    case b {
+      True -> 1
+      False -> 0
+    }
+  })
   |> list.fold(0, int.add)
 }
 

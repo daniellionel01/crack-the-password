@@ -1,9 +1,9 @@
+import gleam/bool
 import gleam/int
 import gleam/list
-import gleam/bool
+import gleam/option.{type Option, None, Some}
 import gleam/string
 import lib
-import gleam/option.{type Option, None, Some}
 
 pub type Pin =
   #(Int, Int, Int)
@@ -16,7 +16,7 @@ pub fn int_to_pin(n: Int) -> Pin {
   let lst =
     n
     |> int.to_string()
-    |> string.pad_left(3, "0")
+    |> string.pad_start(3, "0")
     |> string.split("")
     |> list.map(lib.str_to_int)
 
